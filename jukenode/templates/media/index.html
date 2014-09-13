@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block header %}
+    <title>JukeNode Media</title>
+{% endblock %}
+
+
+{% block body %}
+    <div class=metanav>
+        <a href="{{ url_for('upload_audio') }}">Upload audio</a>
+    </div>
+
+  {% for obj in media_list %}
+    <li><h2>{{ obj.filename }}</h2>{{obj.contentType}} {{obj.uploadDate.strftime('%Y-%m-%d')}} {{obj.album}} {{obj.performer}} {{ obj.track}} {{obj.year}} {{obj.genre }}
+        <form action="{{ url_for('audio_delete') }}" method=post class=remove-entry>
+            <input type=hidden name="file_id" value="{{ obj._id}}">
+            <input type=submit value="x">
+        </form>
+
+        <a href="{{ url_for('audio_play', file_id=obj._id) }}"> <img src="{{ url_for('static', filename='buttons/play.png')}}" width=50></a>
+    </li>
+  {% else %}
+    <li><em>--Empty--</em>
+  {% endfor %}
+  </ul>
+{% endblock %}
+
+
+</div>

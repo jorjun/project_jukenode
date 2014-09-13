@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block body %}
+  {% if session.logged_in %}
+    <form action="{{ url_for('add_node') }}" method=post class=add-entry>
+      <dl>
+        <dt>Name:
+        <dd><input type=text size=25 name=node_name>
+        <dt>IP address:
+        <dd><input type=text size=10 name=node_ip>
+        <input type="radio" NAME="node_type" VALUE="1">Speaker
+        <input type="radio" NAME="node_type" VALUE="2">Microphone
+        <dt>Description:
+        <dd><textarea name=node_description rows=5 cols=40></textarea>
+        <dt>Heart beat interval:
+        <dd><input type=radio name=node_beat_interval value="10">10 secs
+        <dd><input type=radio name=node_beat_interval value="20">20 secs
+        <dd><input type=radio name=node_beat_interval value="60">60 secs
+        <dd><input type=submit value=Save>
+      </dl>
+    </form>
+  {% endif %}
+  <ul class=entries>
+  {% for node in nodes %}
+    <li><h2>{{ node.node_name }}</h2>{{ node.node_text|safe }}{{ node.node_ip}}
+        <form action="{{ url_for('remove_node') }}" method=post class=remove-entry>
+            <dd><input type=hidden name="node_name" value="{{ node.node_name}}">
+            <dd><input type=submit value="x">
+        </form>
+    </li>
+  {% else %}
+    <li><em>--Empty--</em>
+  {% endfor %}
+  </ul>
+{% endblock %}
